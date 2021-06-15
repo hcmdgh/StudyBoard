@@ -1,0 +1,9 @@
+启动Gunicorn的命令：
+    （先进入Flask APP目录）
+    gunicorn -w 4 -b localhost:8000 app:app -D
+
+停止Gunicorn的命令：
+    先找到主进程的pid：
+    pstree -ap | grep gunicorn
+    然后用kill命令结束：
+    kill -QUIT [pid]
