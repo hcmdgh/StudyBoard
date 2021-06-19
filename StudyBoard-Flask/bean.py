@@ -81,5 +81,37 @@ class Diary:
         return json_obj
 
 
+class Excerpt:
+    def __init__(self, *, _id=None, content: str, source: str, date: datetime = None, username: str):
+        self._id = _id
+        self.content = content
+        self.source = source
+        if date:
+            self.date = date
+        else:
+            self.date = util.to_date(datetime.now())
+        self.username = username
+
+    def save(self):
+        entry = dict(self.__dict__)
+        if self._id is None:
+            del entry["_id"]
+        db.get_collection("excerpt").save(entry)
+
+    @classmethod
+    def find(cls, query: Dict) -> List['Excerpt']:
+        entries = db.get_collection("excerpt").find(query)
+        res = []
+        for entry in entries:
+            res.append(Excerpt(**entry))
+        return res
+
+    def to_json(self) -> Dict:
+        json_obj = dict(self.__dict__)
+        del json_obj["_id"]
+        json_obj["date"] = util.datetime2str(json_obj["date"], "dw")
+        return json_obj
+
+
 class ValidationError(RuntimeError):
     pass

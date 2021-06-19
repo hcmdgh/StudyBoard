@@ -1,19 +1,17 @@
 <template>
     <h1>欢迎来学习，{{ username }}先生~ 今日学习总时长：{{ dailyStudyTime }}</h1>
-    <div class="container">
-        <label>
-            任务描述：
-            <input type="text" v-model="input.desc">
-        </label>
-        <label>
-            时长：
+    <el-form :model="input">
+        <el-form-item label="任务描述：">
+            <el-input v-model="input.desc"></el-input>
+        </el-form-item>
+        <el-form-item label="时长：">
             <select v-model="input.duration">
                 <option v-for="item in choice.minute" :value="item">{{ item }}</option>
             </select>
             分钟
-        </label>
-        <button @click="addStudyTask">开始学习</button>
-    </div>
+        </el-form-item>
+        <el-button type="primary" @click="addStudyTask">开始学习</el-button>
+    </el-form>
 
     <div class="container" v-if="studyState.studying">
         <div>当前任务：{{ studyState.desc }}</div>
@@ -25,18 +23,11 @@
     </div>
 
     <div class="container">
-        <table>
-            <tr>
-                <th>任务描述</th>
-                <th>开始时间</th>
-                <th>持续时长</th>
-            </tr>
-            <tr v-for="task in dailyTasks">
-                <td>{{ task.desc }}</td>
-                <td>{{ task.begin_time }}</td>
-                <td>{{ task.duration }} min</td>
-            </tr>
-        </table>
+        <el-table :data="dailyTasks" stripe style="width: 100%">
+            <el-table-column prop="desc" label="任务描述"></el-table-column>
+            <el-table-column prop="begin_time" label="开始时间"></el-table-column>
+            <el-table-column prop="duration" label="持续时长"></el-table-column>
+        </el-table>
     </div>
 </template>
 

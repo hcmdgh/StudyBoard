@@ -125,5 +125,26 @@ def get_diaries():
     return jsonify(diaries=diaries)
 
 
+@app.route('/update-excerpt/', methods=["POST"])
+@login_required
+def update_excerpt():
+    db.update_excerpt(
+        username=g.username,
+        content=request.json["content"],
+        source=request.json["source"],
+        date=datetime.now(),
+    )
+    return jsonify(error=None)
+
+
+@app.route('/get-excerpts/', methods=["POST"])
+@login_required
+def get_excerpts():
+    excerpts = []
+    for excerpt in db.get_excerpts(g.username):
+        excerpts.append(excerpt.to_json())
+    return jsonify(excerpts=excerpts)
+
+
 if __name__ == '__main__':
     app.run(host="localhost", port=8000, debug=False)

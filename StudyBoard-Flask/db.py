@@ -124,3 +124,25 @@ def get_diaries(username: str) -> List[Diary]:
     return Diary.find({
         "username": username,
     })
+
+
+def update_excerpt(*, username: str, date: datetime, content: str, source: str):
+    date = util.to_date(date)
+    excerpts = Excerpt.find({
+        "username": username,
+        "date": date,
+    })
+    if not excerpts:
+        Excerpt(content=content, source=source, date=date, username=username).save()
+    elif len(excerpts) == 1:
+        excerpts[0].content = content
+        excerpts[0].source = source
+        excerpts[0].save()
+    else:
+        raise RuntimeError
+
+
+def get_excerpts(username: str) -> List[Excerpt]:
+    return Excerpt.find({
+        "username": username,
+    })
