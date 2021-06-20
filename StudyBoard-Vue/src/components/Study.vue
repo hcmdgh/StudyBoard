@@ -29,6 +29,14 @@
             <el-table-column prop="duration" label="持续时长"></el-table-column>
         </el-table>
     </div>
+
+    <div class="container">
+        <div>近10天学习时长：</div>
+        <el-table :data="recentStudyTime" stripe style="width: 100%">
+            <el-table-column prop="date" label="日期"></el-table-column>
+            <el-table-column prop="duration" label="学习时长"></el-table-column>
+        </el-table>
+    </div>
 </template>
 
 <script>
@@ -68,6 +76,7 @@
                 interval: null,
                 dailyStudyTime: '',
                 dailyTasks: [],
+                recentStudyTime: [],
             }
         },
 
@@ -112,13 +121,18 @@
 
                     this.dailyTasks = dailyStates.finished_tasks;
                 });
+
+                ajaxPost('get-recent-study-time', { token: this.token }, resp => {
+                    this.recentStudyTime = resp.recent_study_time;
+                });
             },
 
             giveUp() {
                 if (confirm('学习贵在坚持，您真的要半途而废吗？')) {
-                    ajaxPost('interrupt-task', { token: this.token });
+                    ajaxPost('interrupt-task', { token: this.token }, resp => {
+                        this.refresh();
+                    });
                 }
-                this.refresh();
             },
         },
 
@@ -147,5 +161,8 @@
 </script>
 
 <style scoped>
-
+    .container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 </style>

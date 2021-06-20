@@ -1,6 +1,6 @@
 <template>
     <el-menu
-        default-active="/diary"
+        default-active="/study"
         class="el-menu-demo"
         mode="horizontal"
         background-color="#545c64"

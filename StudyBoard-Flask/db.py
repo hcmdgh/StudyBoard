@@ -72,6 +72,18 @@ def get_daily_study_time(username: str) -> int:
     return total
 
 
+def get_recent_study_time(username: str, days: int = 10) -> List[Dict[str, str]]:
+    date = util.to_date(datetime.now())
+    res = []
+    for i in range(days):
+        total_duration = 0
+        for task in get_finished_tasks(date=date, username=username):
+            total_duration += task.duration
+        res.append(dict(date=util.datetime2str(date, "dw"), duration=util.format_minutes(total_duration)))
+        date -= timedelta(days=1)
+    return res
+
+
 def interrupt_task(username: str):
     task = get_running_task(username)
     if task:

@@ -11,7 +11,7 @@ import Diary from './components/Diary.vue';
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
-        { path: '/', component: Diary },
+        { path: '/', component: Study },
         { path: '/study', component: Study },
         { path: '/excerpt', component: Excerpt },
         { path: '/diary', component: Diary },

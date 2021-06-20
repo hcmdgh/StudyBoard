@@ -3,6 +3,7 @@ from flask_cors import CORS
 from typing import Dict
 import functools
 import db
+import util
 from bean import *
 import config
 
@@ -66,9 +67,7 @@ def get_daily_states():
 
     # 获取当日学习时长
     minutes = db.get_daily_study_time(g.username)
-    m = minutes % 60
-    h = minutes // 60
-    resp_dict["duration_str"] = f"{h} 时 {m} 分"
+    resp_dict["duration_str"] = util.format_minutes(minutes)
 
     return jsonify(resp_dict)
 
@@ -144,6 +143,12 @@ def get_excerpts():
     for excerpt in db.get_excerpts(g.username):
         excerpts.append(excerpt.to_json())
     return jsonify(excerpts=excerpts)
+
+
+@app.route('/get-recent-study-time/', methods=["POST"])
+@login_required
+def get_recent_study_time():
+    return jsonify(recent_study_time=db.get_recent_study_time(g.username))
 
 
 if __name__ == '__main__':

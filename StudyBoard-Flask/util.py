@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Tuple
 
-WEEKDAY_ARR = "一二三四五六日"
+WEEKDAY_ARR = "零一二三四五六日"
 
 
 def datetime2str(dt: datetime, format_: str) -> str:
@@ -11,6 +11,17 @@ def datetime2str(dt: datetime, format_: str) -> str:
         "w": f"星期{WEEKDAY_ARR[dt.isoweekday()]}",
     }
     return " ".join(dict_[ch] for ch in format_)
+
+
+def format_minutes(minutes: int) -> str:
+    if minutes <= 0:
+        return "--"
+    m = minutes % 60
+    h = minutes // 60
+    if h > 0:
+        return f"{h} 时 {m} 分"
+    else:
+        return f"{m} 分"
 
 
 def get_date_bounds(dt: datetime) -> Tuple[datetime, datetime]:
