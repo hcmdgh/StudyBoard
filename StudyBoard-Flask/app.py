@@ -124,6 +124,15 @@ def get_diaries():
     return jsonify(diaries=diaries)
 
 
+@app.route('/get-book-records/', methods=["POST"])
+@login_required
+def get_book_records():
+    records = []
+    for record in db.get_book_records(g.username):
+        records.append(record.to_json())
+    return jsonify(book_records=records)
+
+
 @app.route('/update-excerpt/', methods=["POST"])
 @login_required
 def update_excerpt():

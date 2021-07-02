@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List
 import util
 import db
+from flask_pymongo import ASCENDING, DESCENDING
 
 
 class StudyTask:
@@ -68,7 +69,7 @@ class Diary:
 
     @classmethod
     def find(cls, query: Dict) -> List['Diary']:
-        entries = db.get_collection("diary").find(query)
+        entries = db.get_collection("diary").find(query).sort("date", DESCENDING)
         res = []
         for entry in entries:
             res.append(Diary(**entry))
@@ -100,7 +101,7 @@ class Excerpt:
 
     @classmethod
     def find(cls, query: Dict) -> List['Excerpt']:
-        entries = db.get_collection("excerpt").find(query)
+        entries = db.get_collection("excerpt").find(query).sort("date", DESCENDING)
         res = []
         for entry in entries:
             res.append(Excerpt(**entry))
@@ -110,6 +111,35 @@ class Excerpt:
         json_obj = dict(self.__dict__)
         del json_obj["_id"]
         json_obj["date"] = util.datetime2str(json_obj["date"], "dw")
+        return json_obj
+
+
+class BookRecord:
+    def __init__(self, *, _id=None, name: str, author: str, date: datetime, username: str):
+        self._id = _id
+        self.name = name
+        self.author = author
+        self.date = date
+        self.username = username
+
+    def save(self):
+        entry = dict(self.__dict__)
+        if self._id is None:
+            del entry["_id"]
+        db.get_collection("book_record").save(entry)
+
+    @classmethod
+    def find(cls, query: Dict) -> List['BookRecord']:
+        entries = db.get_collection("book_record").find(query).sort("date", DESCENDING)
+        res = []
+        for entry in entries:
+            res.append(BookRecord(**entry))
+        return res
+
+    def to_json(self) -> Dict:
+        json_obj = dict(self.__dict__)
+        del json_obj["_id"]
+        json_obj["date"] = util.datetime2str(json_obj["date"], "d")
         return json_obj
 
 

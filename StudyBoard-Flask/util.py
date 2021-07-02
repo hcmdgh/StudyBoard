@@ -25,13 +25,16 @@ def format_minutes(minutes: int) -> str:
 
 
 def get_date_bounds(dt: datetime) -> Tuple[datetime, datetime]:
-    begin = to_date(dt)
+    begin = to_date(dt) + timedelta(hours=5)
     end = begin + timedelta(days=1)
     return begin, end
 
 
 def to_date(dt: datetime) -> datetime:
-    return datetime.fromordinal(dt.toordinal())
+    date = datetime.fromordinal(dt.toordinal())
+    if dt.hour < 5:
+        date -= timedelta(days=1)
+    return date
 
 
 if __name__ == '__main__':

@@ -7,6 +7,7 @@ import App from './App.vue';
 import Study from './components/Study.vue';
 import Excerpt from './components/Excerpt.vue';
 import Diary from './components/Diary.vue';
+import Book from './components/Book.vue';
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -15,6 +16,7 @@ const router = createRouter({
         { path: '/study', component: Study },
         { path: '/excerpt', component: Excerpt },
         { path: '/diary', component: Diary },
+        { path: '/book', component: Book },
     ],
 });
 

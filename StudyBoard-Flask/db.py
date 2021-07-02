@@ -138,6 +138,12 @@ def get_diaries(username: str) -> List[Diary]:
     })
 
 
+def get_book_records(username: str) -> List[BookRecord]:
+    return BookRecord.find({
+        "username": username,
+    })
+
+
 def update_excerpt(*, username: str, date: datetime, content: str, source: str):
     date = util.to_date(date)
     excerpts = Excerpt.find({
