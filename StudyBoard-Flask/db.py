@@ -67,7 +67,7 @@ def login_by_pswd(username: str, password: str) -> Tuple[str, str]:
 
 def get_daily_study_time(username: str) -> int:
     total = 0
-    for task in get_finished_tasks(date=datetime.now(), username=username):
+    for task in get_finished_tasks(date=util.to_date(datetime.now()), username=username):
         total += task.duration
     return total
 

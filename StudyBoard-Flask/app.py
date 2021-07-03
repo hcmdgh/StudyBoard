@@ -61,7 +61,7 @@ def get_daily_states():
 
     # 获取当日已经完成的学习任务
     tasks = []
-    for task in db.get_finished_tasks(date=datetime.now(), username=g.username):
+    for task in db.get_finished_tasks(date=util.to_date(datetime.now()), username=g.username):
         tasks.append(task.to_json())
     resp_dict["finished_tasks"] = tasks
 

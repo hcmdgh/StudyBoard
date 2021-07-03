@@ -24,8 +24,8 @@ def format_minutes(minutes: int) -> str:
         return f"{m} 分"
 
 
-def get_date_bounds(dt: datetime) -> Tuple[datetime, datetime]:
-    begin = to_date(dt) + timedelta(hours=5)
+def get_date_bounds(date: datetime) -> Tuple[datetime, datetime]:
+    begin = date + timedelta(hours=5)
     end = begin + timedelta(days=1)
     return begin, end
 
